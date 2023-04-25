@@ -6,7 +6,7 @@ function Card(props) {
     }
 
     return (
-        <article className="card" key={props.card._id} >
+        <article className="card">
             <img className="card__photo" src={props.card.link} alt={props.card.name} onClick={handleClick} />
             <div className="card__signature">
                 <h2 className="card__title">{props.card.name}</h2>

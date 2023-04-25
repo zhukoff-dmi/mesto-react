@@ -11,7 +11,6 @@ function App() {
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState({});
-    const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
 
     function openEditAvatarPopup() {
         setIsEditAvatarPopupOpen(true);
@@ -27,14 +26,14 @@ function App() {
 
     function openImagePopup(card) {
         setSelectedCard(card);
-        setIsImagePopupOpen(true);
     }
 
     const closeAllPopups = function () {
         setIsEditProfilePopupOpen(false);
         setIsAddPlacePopupOpen(false);
         setIsEditAvatarPopupOpen(false);
-        setIsImagePopupOpen(false);
+        setSelectedCard({});
+
     }
 
     return (
@@ -58,11 +57,11 @@ function App() {
                 onClose={closeAllPopups}>
 
                 <input id="username" className="popup__input popup__input_type_name" name="name" type="text"
-                    placeholder="Имя" minlength="2" maxlength="40" required />
+                    placeholder="Имя" minLength="2" maxLength="40" required />
                 <span className="username-error popup__input-error"></span>
 
                 <input id="job" className="popup__input popup__input_type_job" name="about" type="text"
-                    placeholder="О себе" minlength="2" maxlength="200" required />
+                    placeholder="О себе" minLength="2" maxLength="200" required />
                 <span className="job-error popup__input-error"></span>
 
             </PopupWithForm>
@@ -75,7 +74,7 @@ function App() {
                 onClose={closeAllPopups}>
 
                 <input id="title" className="popup__input popup__input_type_title" name="name" type="text"
-                    placeholder="Название" minlength="2" maxlength="30" required />
+                    placeholder="Название" minLength="2" maxLength="30" required />
                 <span className="title-error popup__input-error"></span>
 
                 <input id="link" className="popup__input popup__input_type_link" name="link" type="url"
@@ -92,9 +91,9 @@ function App() {
                 onClose={closeAllPopups}>
 
 
-                <input id="avatar" class="popup__input popup__input_avatar" name="link" type="url"
+                <input id="avatar" className="popup__input popup__input_avatar" name="link" type="url"
                     placeholder="Ссылка на аватар" required />
-                <span class="avatar-error popup__input-error"></span>
+                <span className="avatar-error popup__input-error"></span>
 
             </PopupWithForm>
 
@@ -105,7 +104,7 @@ function App() {
                 onClose={closeAllPopups}>
             </PopupWithForm>
 
-            <ImagePopup card={selectedCard} onClose={closeAllPopups} isOpen={isImagePopupOpen}></ImagePopup>
+            <ImagePopup card={selectedCard} onClose={closeAllPopups}></ImagePopup>
 
         </div>
     );

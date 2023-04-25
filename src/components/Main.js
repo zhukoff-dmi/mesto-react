@@ -63,9 +63,6 @@ function Main(props) {
                     return <Card
                         card={data}
                         key={data._id}
-                        // likes={card.likes}
-                        // name={card.name}
-                        // link={card.link}
                         onCardClick={props.onCardClick}
                     />
                 }
