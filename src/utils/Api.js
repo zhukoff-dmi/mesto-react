@@ -89,6 +89,14 @@ class Api {
             headers: this._headers,
         })
     }
+
+    changeLikeCardStatus(id, isLiked) {
+        if(isLiked){
+            return this.putLike(id)
+        } else {
+            return this.deleteLike(id)
+        }
+    }
 }
 
 const api = new Api({
