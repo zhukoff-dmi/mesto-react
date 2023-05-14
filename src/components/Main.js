@@ -1,34 +1,9 @@
 import { useContext } from 'react';
 import Card from './Card'
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import { CardContext } from '../contexts/CardContext';
-
 
 function Main(props) {
     const currentUser = useContext(CurrentUserContext);
-    const cards = useContext(CardContext);
-
-    // const [userName, setUserName] = useState('');
-    // const [userDescription, setUserDescription] = useState('');
-    // const [userAvatar, seUserAvatar] = useState('');
-    // const [cards, setCard] = useState([]);
-
-    // useEffect(() => {
-    //     api.getUserInfo()
-    //         .then(data => {
-    //             setUserName(data.name);
-    //             setUserDescription(data.about);
-    //             seUserAvatar(data.avatar);
-    //         })
-    //         .catch(error => console.error(error));
-    // }, []);
-
-    // useEffect(() => {
-    //     api.getCards().then(data => {
-    //         setCard(data);
-    //     })
-    //         .catch(error => console.error(error));
-    // }, [])
 
     return (
         <main>
@@ -63,7 +38,7 @@ function Main(props) {
             </section>
 
             <section className="cards">
-                {cards.map((data, i) => {
+                {props.cards.map((data, i) => {
                     return <Card
                         card={data}
                         key={data._id}

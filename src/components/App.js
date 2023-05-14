@@ -6,7 +6,6 @@ import ImagePopup from './ImagePopup';
 import PopupWithForm from './PopupWithForm';
 import { useState, useEffect } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import { CardContext } from '../contexts/CardContext';
 import EditProfilePopup from './EditProfilePopup';
 import api from '../utils/Api';
 import EditAvatarPopup from './EditAvatarPopup';
@@ -23,11 +22,11 @@ function App() {
             .catch(error => console.error(error));
     }, []);
 
-    const [card, setCard] = useState([]);
+    const [cards, setCards] = useState([]);
 
     useEffect(() => {
-        api.getCards().then(data => {
-            setCard(data);
+        api.getCards().then((data) => {
+            setCards(data);
         }).catch(error => console.error(error));
     }, [])
 
@@ -37,14 +36,14 @@ function App() {
 
         // Отправляем запрос в API и получаем обновлённые данные карточки
         api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-            setCard((state) => state.map((c) => c._id === card._id ? newCard : c));
+            setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
         });
     }
 
     function handleCardDelete(card) {
-        api.deleteCard(card._id).then(
-            setCard(prevState => prevState.filter((el) => el._id !== card._id)),
-        ).catch(error => console.error(error))
+        api.deleteCard(card._id).then(() => {
+            setCards((prevState) => prevState.filter((el) => el._id !== card._id))
+        }).catch(error => console.error(error))
     }
 
     function handleUpdateUser(inputData) {
@@ -63,9 +62,9 @@ function App() {
 
     function handleAddNewCard(cardData) {
         api.addNewCard(cardData).then((updated) => {
-            setCard([updated, ...card]);
+            setCards([updated, ...cards]);
             closeAllPopups();
-        })
+        }).catch(error => console.error(error))
     }
 
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -100,32 +99,31 @@ function App() {
     return (
         <div className='page'>
             <CurrentUserContext.Provider value={currentUser} >
-                <CardContext.Provider value={card}>
-                    <Header />
-                    <Main
-                        onEditProfile={openEditProfilePopup}
-                        onEditAvatar={openEditAvatarPopup}
-                        onAddPlace={openEditPlacePopup}
-                        onCardClick={openImagePopup}
-                        onCardLike={handleCardLike}
-                        onDeleteClick={handleCardDelete}
-                    />
+                <Header />
+                <Main
+                    cards={cards}
+                    onEditProfile={openEditProfilePopup}
+                    onEditAvatar={openEditAvatarPopup}
+                    onAddPlace={openEditPlacePopup}
+                    onCardClick={openImagePopup}
+                    onCardLike={handleCardLike}
+                    onDeleteClick={handleCardDelete}
+                />
 
-                    <Footer />
+                <Footer />
 
-                    <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
-                    <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddCard={handleAddNewCard} />
-                    <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={hadleUpdateAvatar} />
+                <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
+                <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddCard={handleAddNewCard} />
+                <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={hadleUpdateAvatar} />
 
-                    <PopupWithForm
-                        title='Вы уверены?'
-                        text='Да'
-                        name='delete-card'
-                        onClose={closeAllPopups}>
-                    </PopupWithForm>
+                <PopupWithForm
+                    title='Вы уверены?'
+                    text='Да'
+                    name='delete-card'
+                    onClose={closeAllPopups}>
+                </PopupWithForm>
 
-                    <ImagePopup card={selectedCard} onClose={closeAllPopups}></ImagePopup>
-                </CardContext.Provider>
+                <ImagePopup card={selectedCard} onClose={closeAllPopups}></ImagePopup>
             </CurrentUserContext.Provider>
         </div>
     );
